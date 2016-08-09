@@ -133,6 +133,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="filtersButtonItem" destination="9OL-8w-SLz" id="Hsh-Db-KQD"/>
                         <outlet property="tableView" destination="HjS-Jt-nfe" id="fu1-yF-yCO"/>
                     </connections>
                 </viewController>

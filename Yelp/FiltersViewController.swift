@@ -28,6 +28,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     tableView.dataSource = self
     tableView.delegate = self
 
+
     // Do any additional setup after loading the view.
   }
 

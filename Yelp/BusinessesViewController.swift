@@ -8,10 +8,13 @@
 
 import UIKit
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
 
+  var viewGestureRecognizerForSearchBar: UITapGestureRecognizer!
   var businesses: [Business]!
+  let searchBar = UISearchBar()
 
+  @IBOutlet weak var filtersButtonItem: UIBarButtonItem!
   @IBOutlet weak var tableView: UITableView!
 
   override func viewDidLoad() {
@@ -22,17 +25,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     tableView.rowHeight = UITableViewAutomaticDimension
     tableView.estimatedRowHeight = 120
 
-    Business.searchWithTerm("Thai", completion: { (businesses: [Business]!, error: NSError!) -> Void in
-      self.businesses = businesses
+    performSearch("Restaurants")
 
-      for business in businesses {
-        print(business.name!)
-        print(business.address!)
-      }
+    self.navigationItem.titleView = searchBar
+    searchBar.delegate = self
+    searchBar.text = "Restaurants"
 
-      self.tableView.reloadData()
-    })
-
+    viewGestureRecognizerForSearchBar = UITapGestureRecognizer(target: self, action: #selector(BusinessesViewController.onViewTapped))
 
     /* Example of Yelp search with more search options specified
      Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
@@ -44,6 +43,44 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
      }
      }
      */
+  }
+
+  func performSearch(searchTerm: String) {
+    Business.searchWithTerm(searchTerm, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+      self.businesses = businesses
+
+      for business in businesses {
+        print(business.name!)
+        print(business.address!)
+      }
+
+      self.tableView.reloadData()
+    })
+  }
+
+  func onViewTapped() {
+    if searchBar.isFirstResponder() {
+      searchBar.resignFirstResponder()
+    }
+  }
+
+  func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    view.addGestureRecognizer(viewGestureRecognizerForSearchBar)
+  }
+
+  func searchBarTextDidEndEditing(searchBar: UISearchBar) {
+    view.removeGestureRecognizer(viewGestureRecognizerForSearchBar)
+  }
+
+  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    if let searchTerm = searchBar.text {
+      performSearch(searchTerm)
+    }
+  }
+
+  func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    print("-->", searchText)
   }
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
