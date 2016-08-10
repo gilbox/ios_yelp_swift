@@ -37,7 +37,7 @@
                                                     </constraints>
                                                 </imageView>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="88 Division St" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dk4-V4-IDH">
-                                                    <rect key="frame" x="80" y="45" width="73" height="14"/>
+                                                    <rect key="frame" x="80" y="48" width="73" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -67,8 +67,8 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bars, American (New)" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2XO-ik-zdJ">
-                                                    <rect key="frame" x="80" y="60" width="114" height="14"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Bars, American (New)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2XO-ik-zdJ">
+                                                    <rect key="frame" x="80" y="63" width="114" height="14"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="11"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -91,13 +91,14 @@
                                                 <constraint firstItem="aDa-2d-FGu" firstAttribute="top" secondItem="fGa-dB-sYs" secondAttribute="bottom" constant="5" id="RKk-ht-j4F"/>
                                                 <constraint firstItem="vV4-qy-oRf" firstAttribute="top" secondItem="NRl-9f-I0z" secondAttribute="bottom" constant="4" id="S4L-zG-i0R"/>
                                                 <constraint firstItem="NRl-9f-I0z" firstAttribute="top" secondItem="y6V-nL-0a8" secondAttribute="top" constant="8" id="T24-Hg-EZo"/>
-                                                <constraint firstItem="dk4-V4-IDH" firstAttribute="top" secondItem="JHW-pd-TXc" secondAttribute="bottom" constant="1" id="YG7-tZ-2xC"/>
+                                                <constraint firstItem="dk4-V4-IDH" firstAttribute="top" secondItem="JHW-pd-TXc" secondAttribute="bottom" constant="4" id="YG7-tZ-2xC"/>
                                                 <constraint firstItem="JHW-pd-TXc" firstAttribute="leading" secondItem="OLb-fQ-PPy" secondAttribute="trailing" constant="11" id="c32-Uw-ix2"/>
                                                 <constraint firstItem="2XO-ik-zdJ" firstAttribute="top" secondItem="dk4-V4-IDH" secondAttribute="bottom" constant="1" id="ctn-BH-fhE"/>
                                                 <constraint firstItem="OLb-fQ-PPy" firstAttribute="top" secondItem="y6V-nL-0a8" secondAttribute="topMargin" constant="-1" id="fvY-i7-eu0"/>
                                                 <constraint firstItem="OLb-fQ-PPy" firstAttribute="leading" secondItem="y6V-nL-0a8" secondAttribute="leadingMargin" constant="1" id="gdt-5k-gCB"/>
                                                 <constraint firstAttribute="trailing" secondItem="fGa-dB-sYs" secondAttribute="trailing" constant="11" id="p5r-MK-RO0"/>
                                                 <constraint firstItem="2XO-ik-zdJ" firstAttribute="leading" secondItem="OLb-fQ-PPy" secondAttribute="trailing" constant="11" id="qS5-hL-RFD"/>
+                                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="2XO-ik-zdJ" secondAttribute="trailing" constant="11" id="tFr-44-e9c"/>
                                                 <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="OLb-fQ-PPy" secondAttribute="bottom" constant="2" id="vsk-7O-NYv"/>
                                                 <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="dk4-V4-IDH" secondAttribute="trailing" constant="11" id="wUC-VM-JMR"/>
                                                 <constraint firstItem="vV4-qy-oRf" firstAttribute="leading" secondItem="JHW-pd-TXc" secondAttribute="trailing" constant="7" id="x0O-uo-egU"/>
