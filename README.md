@@ -2,7 +2,7 @@
 
 **Pley** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **4** hours spent in total
+Time spent: **6** hours spent in total
 
 ## User Stories
 
@@ -13,11 +13,11 @@ The following **required** functionality is completed:
    - [X] Custom cells should have the proper Auto Layout constraints.
    - [X] Search bar should be in the navigation bar (doesn't have to expand to show location like the real Yelp app does).
 - [X] Filter page. Unfortunately, not all the filters are supported in the Yelp API.
-   - [ ] The filters you should actually have are: category, sort (best match, distance, highest rated), distance, deals (on/off).
-   - [ ] The filters table should be organized into sections as in the mock.
+   - [X] The filters you should actually have are: category, sort (best match, distance, highest rated), distance, deals (on/off).
+   - [X] The filters table should be organized into sections as in the mock.
    - [X] You can use the default UISwitch for on/off states.
    - [X] Clicking on the "Search" button should dismiss the filters page and trigger the search w/ the new filter settings.
-   - [ ] Distance filter should expand as in the real Yelp app
+   - [X] Distance filter should expand as in the real Yelp app
    - [ ] Categories should show a subset of the full list with a "See All" row to expand. Category list is [here](http://www.yelp.com/developers/documentation/category_list).
 
 The following **optional** features are implemented:
@@ -35,8 +35,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1.
-2.
+1. Sometimes we have to use the delegate pattern for events, other times we use gesture recognizers. What's the logic to choose one or the other?
+2. Why does it take me to interface when I click olympics and is there a way to jump to implementation? And how to expand right pane to be main pane?
 
 ## Video Walkthrough
 
@@ -48,7 +48,7 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+- What is the proper way to handle "should never happen" cases?
 
 ## License
 

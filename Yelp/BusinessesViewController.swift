@@ -12,7 +12,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
   var viewGestureRecognizerForSearchBar: UITapGestureRecognizer!
   var businesses: [Business]!
+  var filters: [String:Any]?
   let searchBar = UISearchBar()
+  var searchTerm: String?
 
   @IBOutlet weak var filtersButtonItem: UIBarButtonItem!
   @IBOutlet weak var tableView: UITableView!
@@ -25,37 +27,25 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     tableView.rowHeight = UITableViewAutomaticDimension
     tableView.estimatedRowHeight = 120
 
-    performSearch("Restaurants")
 
     self.navigationItem.titleView = searchBar
     searchBar.delegate = self
-    searchBar.text = "Restaurants"
+    searchBar.text = searchTerm
+    performSearch()
 
     viewGestureRecognizerForSearchBar = UITapGestureRecognizer(target: self, action: #selector(BusinessesViewController.onViewTapped))
-
-    /* Example of Yelp search with more search options specified
-     Business.searchWithTerm("Restaurants", sort: .Distance, categories: ["asianfusion", "burgers"], deals: true) { (businesses: [Business]!, error: NSError!) -> Void in
-     self.businesses = businesses
-
-     for business in businesses {
-     print(business.name!)
-     print(business.address!)
-     }
-     }
-     */
   }
 
-  func performSearch(searchTerm: String) {
-    Business.searchWithTerm(searchTerm, completion: { (businesses: [Business]!, error: NSError!) -> Void in
+  func performSearch() {
+    let searchTerm = self.searchTerm ?? ""
+    let categories = filters?["categories"] as? [String]
+    let sort = filters?["sort"] as? YelpSortMode
+    let deals = filters?["deals"] as? Bool
+
+    Business.searchWithTerm(searchTerm, sort: sort, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) in
       self.businesses = businesses
-
-      for business in businesses {
-        print(business.name!)
-        print(business.address!)
-      }
-
       self.tableView.reloadData()
-    })
+    }
   }
 
   func onViewTapped() {
@@ -65,18 +55,19 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
   }
 
   func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    searchBar.text = searchTerm
     view.addGestureRecognizer(viewGestureRecognizerForSearchBar)
   }
 
   func searchBarTextDidEndEditing(searchBar: UISearchBar) {
     view.removeGestureRecognizer(viewGestureRecognizerForSearchBar)
+    searchBar.text = searchTerm
   }
 
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    searchTerm = searchBar.text
     searchBar.resignFirstResponder()
-    if let searchTerm = searchBar.text {
-      performSearch(searchTerm)
-    }
+    performSearch()
   }
 
   func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
@@ -110,11 +101,8 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     filtersViewController.delegate = self
   }
 
-  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : AnyObject]) {
-    let categories = filters["categories"] as? [String]
-    Business.searchWithTerm("Restaurants", sort: nil, categories: categories, deals: nil) { (businesses: [Business]!, error: NSError!) in
-      self.businesses = businesses
-      self.tableView.reloadData()
-    }
+  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any]) {
+    self.filters = filters
+    performSearch()
   }
 }

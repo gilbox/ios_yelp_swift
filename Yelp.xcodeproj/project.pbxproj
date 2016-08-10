@@ -10,6 +10,11 @@
 		217192631D58FAD6003B0685 /* BusinessCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192621D58FAD6003B0685 /* BusinessCell.swift */; };
 		217192651D594679003B0685 /* SwitchCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192641D594679003B0685 /* SwitchCell.swift */; };
 		217192671D594750003B0685 /* FiltersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192661D594750003B0685 /* FiltersViewController.swift */; };
+		217192691D5A6C6D003B0685 /* OptionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192681D5A6C6D003B0685 /* OptionCell.swift */; };
+		2171926B1D5A87AF003B0685 /* OptionCollapsedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171926A1D5A87AF003B0685 /* OptionCollapsedCell.swift */; };
+		2171926D1D5A9755003B0685 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171926C1D5A9755003B0685 /* HeaderCell.swift */; };
+		2171926F1D5AA0EB003B0685 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2171926E1D5AA0EB003B0685 /* HeaderView.xib */; };
+		217192711D5AA4DA003B0685 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192701D5AA4DA003B0685 /* HeaderView.swift */; };
 		222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */; };
 		222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A5E19CCF9F900D2DB53 /* Main.storyboard */; };
 		222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A6119CCF9F900D2DB53 /* Images.xcassets */; };
@@ -37,6 +42,11 @@
 		217192621D58FAD6003B0685 /* BusinessCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BusinessCell.swift; sourceTree = "<group>"; };
 		217192641D594679003B0685 /* SwitchCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwitchCell.swift; sourceTree = "<group>"; };
 		217192661D594750003B0685 /* FiltersViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FiltersViewController.swift; sourceTree = "<group>"; };
+		217192681D5A6C6D003B0685 /* OptionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionCell.swift; sourceTree = "<group>"; };
+		2171926A1D5A87AF003B0685 /* OptionCollapsedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OptionCollapsedCell.swift; sourceTree = "<group>"; };
+		2171926C1D5A9755003B0685 /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
+		2171926E1D5AA0EB003B0685 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
+		217192701D5AA4DA003B0685 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		222D8A5519CCF9F900D2DB53 /* Yelp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yelp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222D8A5919CCF9F900D2DB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -82,6 +92,10 @@
 			children = (
 				217192621D58FAD6003B0685 /* BusinessCell.swift */,
 				217192641D594679003B0685 /* SwitchCell.swift */,
+				217192681D5A6C6D003B0685 /* OptionCell.swift */,
+				2171926A1D5A87AF003B0685 /* OptionCollapsedCell.swift */,
+				2171926C1D5A9755003B0685 /* HeaderCell.swift */,
+				217192701D5AA4DA003B0685 /* HeaderView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -115,6 +129,7 @@
 				22AAAA9D1AEA1EC600A544AF /* View Controllers */,
 				222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */,
 				222D8A5E19CCF9F900D2DB53 /* Main.storyboard */,
+				2171926E1D5AA0EB003B0685 /* HeaderView.xib */,
 				222D8A6119CCF9F900D2DB53 /* Images.xcassets */,
 				222D8A6319CCF9F900D2DB53 /* LaunchScreen.xib */,
 				222D8A5819CCF9F900D2DB53 /* Supporting Files */,
@@ -284,6 +299,7 @@
 				222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */,
 				222D8A6519CCF9F900D2DB53 /* LaunchScreen.xib in Resources */,
 				222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */,
+				2171926F1D5AA0EB003B0685 /* HeaderView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,9 +411,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				217192631D58FAD6003B0685 /* BusinessCell.swift in Sources */,
+				2171926B1D5A87AF003B0685 /* OptionCollapsedCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,
 				217192671D594750003B0685 /* FiltersViewController.swift in Sources */,
 				22AAAA991AEA0A9700A544AF /* Business.swift in Sources */,
+				217192691D5A6C6D003B0685 /* OptionCell.swift in Sources */,
+				2171926D1D5A9755003B0685 /* HeaderCell.swift in Sources */,
+				217192711D5AA4DA003B0685 /* HeaderView.swift in Sources */,
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,
 				222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */,
 				217192651D594679003B0685 /* SwitchCell.swift in Sources */,

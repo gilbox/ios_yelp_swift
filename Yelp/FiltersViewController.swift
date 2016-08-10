@@ -8,14 +8,41 @@
 
 import UIKit
 
-@objc protocol FiltersViewControllerDelegate {
-  optional func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String:AnyObject])
+protocol FiltersViewControllerDelegate: class {
+  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String:Any])
 }
 
 class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
 
+  let DEAL = 0
+  let DISTANCE = 1
+  let SORT_BY = 2
+  let CATEGORIES = 3
+
+  let sectionTitle = [
+    1: "Distance",
+    2: "Sort By",
+    3: "Category",
+  ]
+  let optionValues: [Int: [[String:Any]]] = [
+    1: [
+      [ "title": "0.3 Miles", "value": 0.3 ],
+      [ "title": "0.5 Miles", "value": 0.5 ],
+      [ "title": "1 Mile", "value": 1],
+      [ "title": "2 Miles", "value": 2],
+      [ "title": "5 Miles", "value": 5],
+    ],
+    2: [
+      [ "title": "Best Match", "value": YelpSortMode.BestMatched],
+      [ "title": "Distance", "value": YelpSortMode.Distance ],
+      [ "title": "Highest Rated", "value": YelpSortMode.HighestRated ],
+    ],
+  ]
+  var selectedOptionIndex: [Int:Int] = [ 1: 2, 2: 0 ]
+  var tableSectionCollapsed: [Int:Bool] = [ 1: true, 2: true ]
   var categories: [[String:String]]!
   var switchStates = [Int:Bool]()
+  var dealState: Bool = false
   weak var delegate: FiltersViewControllerDelegate?
 
   @IBOutlet weak var tableView: UITableView!
@@ -27,6 +54,9 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
 
     tableView.dataSource = self
     tableView.delegate = self
+
+    let nib = UINib(nibName: "HeaderView", bundle: nil)
+    tableView.registerNib(nib, forHeaderFooterViewReuseIdentifier: "HeaderView")
 
 
     // Do any additional setup after loading the view.
@@ -40,25 +70,100 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
   func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
     let indexPath = tableView.indexPathForCell(switchCell)!
 
-    switchStates[indexPath.row] = value
+    if (indexPath.section == DEAL) {
+      dealState = value
+    }
+
+    if (indexPath.section == CATEGORIES) {
+      switchStates[indexPath.row] = value
+    }
+  }
+
+  func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    return 4
+  }
+
+  func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+    if section == DEAL {
+      return 0
+    }
+    return 30
+  }
+
+  func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+    if (section == DEAL) { return nil }
+
+    let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier("HeaderView") as! HeaderView
+    view.titleLabel.text = sectionTitle[section]
+    return view
+  }
+
+  func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    let section = indexPath.section
+    if (section == DISTANCE || section == SORT_BY) {
+      let wasCollapsed = (tableSectionCollapsed[section] ?? false)
+      if (!wasCollapsed) {
+        selectedOptionIndex[section] = indexPath.row
+      }
+      tableSectionCollapsed[section] = !wasCollapsed
+      tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
   }
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    return categories.count
+    switch section {
+    case DEAL:
+      return 1
+    case DISTANCE, SORT_BY:
+      return (tableSectionCollapsed[section] ?? false) ? 1 : optionValues[section]!.count
+    case CATEGORIES:
+      return categories.count
+    default:
+      // should never happen
+      return 0
+    }
   }
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
-    cell.delegate = self
-    cell.switchLabel.text = categories[indexPath.row]["name"]
-    cell.onSwitch.on = switchStates[indexPath.row] ?? false
-    return cell
+    let section = indexPath.section
+
+    switch section {
+    case DEAL:
+      let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+      cell.delegate = self
+      cell.switchLabel.text = "Offering a Deal"
+      cell.onSwitch.on = dealState
+      return cell
+    case DISTANCE, SORT_BY:
+      let sectionIsCollapsed = tableSectionCollapsed[section] ?? false
+      let indexOfSelectedOption = selectedOptionIndex[section]!
+      if (sectionIsCollapsed) {
+        let cell = tableView.dequeueReusableCellWithIdentifier("OptionCollapsedCell") as! OptionCollapsedCell
+        let option = optionValues[section]![indexOfSelectedOption]
+        cell.option = option
+        return cell
+      }
+      let option = optionValues[section]![indexPath.row]
+      let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell") as! OptionCell
+      cell.option = option
+      cell.on = indexOfSelectedOption == indexPath.row
+      return cell
+    case CATEGORIES:
+      let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
+      cell.delegate = self
+      cell.switchLabel.text = categories[indexPath.row]["name"]
+      cell.onSwitch.on = switchStates[indexPath.row] ?? false
+      return cell
+    default:
+      // should never happen
+      return UITableViewCell()
+    }
   }
 
   @IBAction func onSearchButton(sender: AnyObject) {
     dismissViewControllerAnimated(true, completion: nil)
 
-    var filters = [String: AnyObject]()
+    var filters = [String: Any]()
     var selectedCategories = [String]()
 
     for (row, isSelected) in switchStates {
@@ -71,7 +176,19 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       filters["categories"] = selectedCategories
     }
 
-    delegate?.filtersViewController?(self, didUpdateFilters: filters)
+    filters["deals"] = dealState
+
+    if let distanceIndex = selectedOptionIndex[DISTANCE] {
+      let distance = optionValues[DISTANCE]![distanceIndex]["value"]
+      filters["distance"] = distance
+    }
+
+    if let sortByIndex = selectedOptionIndex[SORT_BY] {
+      let sortBy = optionValues[SORT_BY]![sortByIndex]["value"]
+      filters["sort"] = sortBy
+    }
+
+    delegate?.filtersViewController(self, didUpdateFilters: filters)
   }
 
   @IBAction func onCancelButton(sender: AnyObject) {
