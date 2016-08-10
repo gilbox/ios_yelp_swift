@@ -18,6 +18,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
   let DISTANCE = 1
   let SORT_BY = 2
   let CATEGORIES = 3
+  let MAX_CONTRACTED_CATEGORIES = 3
 
   let sectionTitle = [
     1: "Distance",
@@ -43,6 +44,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
   var categories: [[String:String]]!
   var switchStates = [Int:Bool]()
   var dealState: Bool = false
+  var categoriesAreExpanded: Bool = false
   weak var delegate: FiltersViewControllerDelegate?
 
   @IBOutlet weak var tableView: UITableView!
@@ -108,6 +110,10 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       tableSectionCollapsed[section] = !wasCollapsed
       tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
+    if (section == CATEGORIES && !categoriesAreExpanded && indexPath.row == MAX_CONTRACTED_CATEGORIES) {
+      categoriesAreExpanded = true
+      tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
+    }
   }
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -117,7 +123,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
     case DISTANCE, SORT_BY:
       return (tableSectionCollapsed[section] ?? false) ? 1 : optionValues[section]!.count
     case CATEGORIES:
-      return categories.count
+      // TODO: assert somewhere that MAX_CONTRACTED_CATEGORIES > categories.count ?
+      return categoriesAreExpanded ? categories.count : MAX_CONTRACTED_CATEGORIES + 1
     default:
       // should never happen
       return 0
@@ -149,6 +156,9 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       cell.on = indexOfSelectedOption == indexPath.row
       return cell
     case CATEGORIES:
+      if !categoriesAreExpanded && indexPath.row == MAX_CONTRACTED_CATEGORIES {
+        return tableView.dequeueReusableCellWithIdentifier("SeeAllCell")!
+      }
       let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
       cell.delegate = self
       cell.switchLabel.text = categories[indexPath.row]["name"]

@@ -2,7 +2,7 @@
 
 **Pley** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **6** hours spent in total
+Time spent: **6.7** hours spent in total
 
 ## User Stories
 
@@ -18,7 +18,7 @@ The following **required** functionality is completed:
    - [X] You can use the default UISwitch for on/off states.
    - [X] Clicking on the "Search" button should dismiss the filters page and trigger the search w/ the new filter settings.
    - [X] Distance filter should expand as in the real Yelp app
-   - [ ] Categories should show a subset of the full list with a "See All" row to expand. Category list is [here](http://www.yelp.com/developers/documentation/category_list).
+   - [X] Categories should show a subset of the full list with a "See All" row to expand. Category list is [here](http://www.yelp.com/developers/documentation/category_list).
 
 The following **optional** features are implemented:
 
@@ -49,6 +49,9 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 ## Notes
 
 - What is the proper way to handle "should never happen" cases?
+- Had to remove `@objc` from `FiltersViewControllerDelegate` to allow `Any` type argument, 
+  because `optionValues` isn't allowed to be type `[Int: [[String:Any]]]` .
+  Is Swift automatically casing to `NSString` for strings?
 
 ## License
 
