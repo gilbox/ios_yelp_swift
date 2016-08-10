@@ -12,7 +12,7 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
   var viewGestureRecognizerForSearchBar: UITapGestureRecognizer!
   var businesses: [Business]!
-  var filters: [String:Any]?
+  var filters: Filters?
   let searchBar = UISearchBar()
   var searchTerm: String?
 
@@ -38,11 +38,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
 
   func performSearch() {
     let searchTerm = self.searchTerm ?? ""
-    let categories = filters?["categories"] as? [String]
-    let sort = filters?["sort"] as? YelpSortMode
-    let deals = filters?["deals"] as? Bool
 
-    Business.searchWithTerm(searchTerm, sort: sort, categories: categories, deals: deals) { (businesses: [Business]!, error: NSError!) in
+    Business.searchWithTerm(searchTerm, sort: filters?.sort, categories: filters?.categories, deals: filters?.deals) {
+      (businesses: [Business]!, error: NSError!) in
       self.businesses = businesses
       self.tableView.reloadData()
     }
@@ -96,12 +94,13 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
-    let navigationViewController = segue.destinationViewController as! UINavigationController
-    let filtersViewController = navigationViewController.topViewController as! FiltersViewController
-    filtersViewController.delegate = self
+    if let navigationViewController = segue.destinationViewController as? UINavigationController {
+      let filtersViewController = navigationViewController.topViewController as! FiltersViewController
+      filtersViewController.delegate = self
+    }
   }
 
-  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String : Any]) {
+  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: Filters) {
     self.filters = filters
     performSearch()
   }

@@ -132,6 +132,11 @@
                                 <segue destination="jXb-we-Dvb" kind="modal" id="4tN-22-YJE"/>
                             </connections>
                         </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Map" id="cb8-GI-KmQ">
+                            <connections>
+                                <segue destination="dfc-0X-BxX" kind="push" id="aBk-fS-7ys"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="filtersButtonItem" destination="9OL-8w-SLz" id="Hsh-Db-KQD"/>
@@ -305,6 +310,30 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="hVs-JK-5G9" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="2459" y="338"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ejB-S1-baw">
+            <objects>
+                <viewController id="dfc-0X-BxX" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="vg8-39-SzX"/>
+                        <viewControllerLayoutGuide type="bottom" id="DrO-zI-ZHR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="hBT-4l-uCp">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="oJb-sa-duH">
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                            </mapView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="01L-iF-WJT"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Be4-7M-S2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1485" y="1030"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WAf-X1-5c0">

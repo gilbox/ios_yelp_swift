@@ -15,6 +15,8 @@
 		2171926D1D5A9755003B0685 /* HeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171926C1D5A9755003B0685 /* HeaderCell.swift */; };
 		2171926F1D5AA0EB003B0685 /* HeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2171926E1D5AA0EB003B0685 /* HeaderView.xib */; };
 		217192711D5AA4DA003B0685 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192701D5AA4DA003B0685 /* HeaderView.swift */; };
+		217192731D5B12FB003B0685 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 217192721D5B12FB003B0685 /* MapKit.framework */; };
+		217192751D5BA7FB003B0685 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192741D5BA7FB003B0685 /* Filters.swift */; };
 		222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */; };
 		222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A5E19CCF9F900D2DB53 /* Main.storyboard */; };
 		222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A6119CCF9F900D2DB53 /* Images.xcassets */; };
@@ -47,6 +49,8 @@
 		2171926C1D5A9755003B0685 /* HeaderCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderCell.swift; sourceTree = "<group>"; };
 		2171926E1D5AA0EB003B0685 /* HeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HeaderView.xib; sourceTree = "<group>"; };
 		217192701D5AA4DA003B0685 /* HeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		217192721D5B12FB003B0685 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		217192741D5BA7FB003B0685 /* Filters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
 		222D8A5519CCF9F900D2DB53 /* Yelp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yelp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222D8A5919CCF9F900D2DB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -72,6 +76,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217192731D5B12FB003B0685 /* MapKit.framework in Frameworks */,
 				31D95BCBCA38716181E686D3 /* Pods_Yelp.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,6 +179,7 @@
 			isa = PBXGroup;
 			children = (
 				22AAAA981AEA0A9700A544AF /* Business.swift */,
+				217192741D5BA7FB003B0685 /* Filters.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -190,6 +196,7 @@
 		4A7CA25ACD374CA0AC966A24 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				217192721D5B12FB003B0685 /* MapKit.framework */,
 				AA3C5CF4FD317D72ABE2AAC4 /* Pods.framework */,
 				C79C0AC126EDAA235847CEA2 /* Pods_Yelp.framework */,
 				0A1000F3975EB43318C1D4FA /* Pods_YelpTests.framework */,
@@ -419,6 +426,7 @@
 				2171926D1D5A9755003B0685 /* HeaderCell.swift in Sources */,
 				217192711D5AA4DA003B0685 /* HeaderView.swift in Sources */,
 				222D8A7D19CCFAE000D2DB53 /* YelpClient.swift in Sources */,
+				217192751D5BA7FB003B0685 /* Filters.swift in Sources */,
 				222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */,
 				217192651D594679003B0685 /* SwitchCell.swift in Sources */,
 			);

@@ -9,7 +9,7 @@
 import UIKit
 
 protocol FiltersViewControllerDelegate: class {
-  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: [String:Any])
+  func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: Filters)
 }
 
 class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
@@ -173,7 +173,8 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
   @IBAction func onSearchButton(sender: AnyObject) {
     dismissViewControllerAnimated(true, completion: nil)
 
-    var filters = [String: Any]()
+    var sort: YelpSortMode?
+    var distance: Float?
     var selectedCategories = [String]()
 
     for (row, isSelected) in switchStates {
@@ -182,22 +183,15 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       }
     }
 
-    if (selectedCategories.count > 0) {
-      filters["categories"] = selectedCategories
-    }
-
-    filters["deals"] = dealState
-
     if let distanceIndex = selectedOptionIndex[DISTANCE] {
-      let distance = optionValues[DISTANCE]![distanceIndex]["value"]
-      filters["distance"] = distance
+      distance = optionValues[DISTANCE]![distanceIndex]["value"] as? Float
     }
 
     if let sortByIndex = selectedOptionIndex[SORT_BY] {
-      let sortBy = optionValues[SORT_BY]![sortByIndex]["value"]
-      filters["sort"] = sortBy
+      sort = optionValues[SORT_BY]![sortByIndex]["value"] as? YelpSortMode
     }
 
+    let filters = Filters(sort: sort, categories: selectedCategories, deals: dealState, distance: distance)
     delegate?.filtersViewController(self, didUpdateFilters: filters)
   }
 
