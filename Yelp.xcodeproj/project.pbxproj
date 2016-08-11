@@ -19,6 +19,7 @@
 		217192751D5BA7FB003B0685 /* Filters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192741D5BA7FB003B0685 /* Filters.swift */; };
 		2171927F1D5BF4C8003B0685 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2171927E1D5BF4C8003B0685 /* MapViewController.swift */; };
 		217192811D5BF587003B0685 /* MapAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192801D5BF587003B0685 /* MapAnnotation.swift */; };
+		217192831D5C047E003B0685 /* InfiniteScrollActivityView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 217192821D5C047E003B0685 /* InfiniteScrollActivityView.swift */; };
 		222D8A5B19CCF9F900D2DB53 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */; };
 		222D8A6019CCF9F900D2DB53 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A5E19CCF9F900D2DB53 /* Main.storyboard */; };
 		222D8A6219CCF9F900D2DB53 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 222D8A6119CCF9F900D2DB53 /* Images.xcassets */; };
@@ -55,6 +56,7 @@
 		217192741D5BA7FB003B0685 /* Filters.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Filters.swift; sourceTree = "<group>"; };
 		2171927E1D5BF4C8003B0685 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		217192801D5BF587003B0685 /* MapAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapAnnotation.swift; sourceTree = "<group>"; };
+		217192821D5C047E003B0685 /* InfiniteScrollActivityView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfiniteScrollActivityView.swift; sourceTree = "<group>"; };
 		222D8A5519CCF9F900D2DB53 /* Yelp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Yelp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		222D8A5919CCF9F900D2DB53 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		222D8A5A19CCF9F900D2DB53 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 				2171926A1D5A87AF003B0685 /* OptionCollapsedCell.swift */,
 				2171926C1D5A9755003B0685 /* HeaderCell.swift */,
 				217192701D5AA4DA003B0685 /* HeaderView.swift */,
+				217192821D5C047E003B0685 /* InfiniteScrollActivityView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -423,6 +426,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				217192831D5C047E003B0685 /* InfiniteScrollActivityView.swift in Sources */,
 				217192631D58FAD6003B0685 /* BusinessCell.swift in Sources */,
 				2171926B1D5A87AF003B0685 /* OptionCollapsedCell.swift in Sources */,
 				22AAAA9C1AEA1EC300A544AF /* BusinessesViewController.swift in Sources */,

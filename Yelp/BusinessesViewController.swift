@@ -9,13 +9,15 @@
 import UIKit
 import CoreLocation
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate, UIScrollViewDelegate {
 
   var viewGestureRecognizerForSearchBar: UITapGestureRecognizer!
   var businesses: [Business]!
   var filters: Filters?
   let searchBar = UISearchBar()
   var searchTerm: String?
+  var isLoadingData = false
+  var loadingMoreView:InfiniteScrollActivityView?
 
   @IBOutlet weak var filtersButtonItem: UIBarButtonItem!
   @IBOutlet weak var tableView: UITableView!
@@ -35,18 +37,54 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     performSearch()
 
     viewGestureRecognizerForSearchBar = UITapGestureRecognizer(target: self, action: #selector(BusinessesViewController.onViewTapped))
+
+    // Set up Infinite Scroll loading indicator
+    let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+    loadingMoreView = InfiniteScrollActivityView(frame: frame)
+    loadingMoreView!.hidden = true
+    tableView.addSubview(loadingMoreView!)
+
+    var insets = tableView.contentInset
+    insets.bottom += InfiniteScrollActivityView.defaultHeight
+    tableView.contentInset = insets
   }
 
   func performSearch() {
     let searchTerm = self.searchTerm ?? ""
 
-    Business.searchWithTerm(searchTerm, sort: filters?.sort, categories: filters?.categories, deals: filters?.deals) {
+    Business.searchWithTerm(searchTerm, sort: filters?.sort, categories: filters?.categories, deals: filters?.deals, offset: 0) {
       (businesses: [Business]!, error: NSError!) in
       self.businesses = businesses
       self.tableView.reloadData()
-      for b in businesses {
-        print(b.coordinate)
-      }
+    }
+  }
+
+  func performPagedSearch() {
+    let searchTerm = self.searchTerm ?? ""
+    guard let offset = businesses?.count else { return }
+
+    // Update position of loadingMoreView, and start loading indicator
+    let frame = CGRectMake(0, tableView.contentSize.height, tableView.bounds.size.width, InfiniteScrollActivityView.defaultHeight)
+    loadingMoreView?.frame = frame
+    loadingMoreView!.startAnimating()
+
+    isLoadingData = true
+    Business.searchWithTerm(searchTerm, sort: filters?.sort, categories: filters?.categories, deals: filters?.deals, offset: offset) {
+      (businesses: [Business]!, error: NSError!) in
+      self.isLoadingData = false
+      self.loadingMoreView!.stopAnimating()
+      self.businesses.appendContentsOf(businesses)
+      self.tableView.reloadData()
+    }
+  }
+
+  func scrollViewDidScroll(scrollView: UIScrollView) {
+    if isLoadingData { return }
+    let bottomEdge = scrollView.contentOffset.y + scrollView.bounds.size.height;
+    if (bottomEdge >= scrollView.contentSize.height) {
+      // we are at the end
+      performPagedSearch()
+
     }
   }
 
