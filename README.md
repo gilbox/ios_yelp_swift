@@ -2,7 +2,7 @@
 
 **Pley** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **6.7** hours spent in total
+Time spent: **9** hours spent in total
 
 ## User Stories
 
@@ -24,7 +24,7 @@ The following **optional** features are implemented:
 
 - [ ] Search results page
    - [ ] Infinite scroll for restaurant results.
-   - [ ] Implement map view of restaurant results.
+   - [X] Implement map view of restaurant results.
 - [ ] Filter page
    - [ ] Implement a custom switch instead of the default UISwitch.
 - [ ] Implement the restaurant detail page.

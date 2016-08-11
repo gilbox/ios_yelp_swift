@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreLocation
 
 class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate {
 
@@ -43,6 +44,9 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
       (businesses: [Business]!, error: NSError!) in
       self.businesses = businesses
       self.tableView.reloadData()
+      for b in businesses {
+        print(b.coordinate)
+      }
     }
   }
 
@@ -94,9 +98,20 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
-    if let navigationViewController = segue.destinationViewController as? UINavigationController {
-      let filtersViewController = navigationViewController.topViewController as! FiltersViewController
-      filtersViewController.delegate = self
+    if segue.destinationViewController is UINavigationController {
+      if let navigationViewController = segue.destinationViewController as? UINavigationController {
+        let filtersViewController = navigationViewController.topViewController as! FiltersViewController
+        filtersViewController.delegate = self
+      }
+    } else if segue.destinationViewController is MapViewController {
+      if let mapViewController = segue.destinationViewController as? MapViewController {
+        var annotations = [MapAnnotation]()
+        for b in businesses {
+          let annotation = MapAnnotation(title: b.name ?? "", locationName: b.categories ?? "", coordinate: b.coordinate!)
+          annotations.append(annotation)
+        }
+        mapViewController.mapAnnotations = annotations
+      }
     }
   }
 
