@@ -323,11 +323,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="oJb-sa-duH">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="oJb-sa-duH">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="oJb-sa-duH" firstAttribute="top" secondItem="hBT-4l-uCp" secondAttribute="top" id="E0h-iY-fbP"/>
+                            <constraint firstAttribute="trailing" secondItem="oJb-sa-duH" secondAttribute="trailing" id="Kch-aX-RzN"/>
+                            <constraint firstItem="DrO-zI-ZHR" firstAttribute="top" secondItem="oJb-sa-duH" secondAttribute="bottom" id="Zko-Ll-DD6"/>
+                            <constraint firstItem="oJb-sa-duH" firstAttribute="leading" secondItem="hBT-4l-uCp" secondAttribute="leading" id="bjb-ZF-S4A"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="01L-iF-WJT"/>
                     <connections>
