@@ -10,6 +10,9 @@ import UIKit
 
 class OptionCell: UITableViewCell {
 
+  let onColor = UIColor.redColor()
+  let offColor = UIColor.clearColor()
+
   @IBOutlet weak var optionCircleView: UIView!
   @IBOutlet weak var titleLabel: UILabel!
 
@@ -38,9 +41,22 @@ class OptionCell: UITableViewCell {
 
   override func setSelected(selected: Bool, animated: Bool) {
     super.setSelected(selected, animated: animated)
+    optionCircleView.backgroundColor = selected ? UIColor.redColor() : normalBackgroundColor()
+  }
 
-    // Configure the view for the selected state
-//    optionCircleView.backgroundColor = UIColor.redColor()
+  override func setHighlighted(highlighted: Bool, animated: Bool) {
+    super.setHighlighted(highlighted, animated: animated)
+    optionCircleView.backgroundColor = highlighted ? UIColor.blackColor() : normalBackgroundColor()
+  }
+
+  // MARK: Private
+
+  private func normalBackgroundColor() -> UIColor {
+    if let on = on where on {
+      return onColor
+    } else {
+      return offColor
+    }
   }
 
 }

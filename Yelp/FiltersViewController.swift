@@ -162,6 +162,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       cell.delegate = self
       cell.switchLabel.text = "Offering a Deal"
       cell.onSwitch.on = dealState
+      cell.selectionStyle = .None
       return cell
     case .Distance, .SortBy:
       let sectionIsCollapsed = tableSectionCollapsed[filterSection] ?? false
@@ -170,12 +171,18 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
         let cell = tableView.dequeueReusableCellWithIdentifier("OptionCollapsedCell") as! OptionCollapsedCell
         let option = optionValues[filterSection]![indexOfSelectedOption]
         cell.option = option
+        let backgroundView = UIView()
+        backgroundView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.025)
+        cell.selectedBackgroundView = backgroundView
         return cell
       }
       let option = optionValues[filterSection]![indexPath.row]
       let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell") as! OptionCell
       cell.option = option
       cell.on = indexOfSelectedOption == indexPath.row
+      let backgroundView = UIView()
+      backgroundView.backgroundColor = UIColor(red: 1, green: 0, blue: 0, alpha: 0.9)
+      cell.selectedBackgroundView = backgroundView
       return cell
     case .Categories:
       if !categoriesAreExpanded && indexPath.row == MAX_CONTRACTED_CATEGORIES {
@@ -185,6 +192,7 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       cell.delegate = self
       cell.switchLabel.text = categories[indexPath.row]["name"]
       cell.onSwitch.on = switchStates[indexPath.row] ?? false
+      cell.selectionStyle = .None
       return cell
     }
   }
