@@ -12,35 +12,44 @@ protocol FiltersViewControllerDelegate: class {
   func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: Filters)
 }
 
+enum FilterSection: Int {
+  case Deal = 0
+  case Distance = 1
+  case SortBy = 2
+  case Categories = 3
+}
+
 class FiltersViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, SwitchCellDelegate {
 
-  let DEAL = 0
-  let DISTANCE = 1
-  let SORT_BY = 2
-  let CATEGORIES = 3
   let MAX_CONTRACTED_CATEGORIES = 3
 
-  let sectionTitle = [
-    1: "Distance",
-    2: "Sort By",
-    3: "Category",
+  let sectionTitle: [FilterSection: String] = [
+    .Distance: "Distance",
+    .SortBy: "Sort By",
+    .Categories: "Category",
   ]
-  let optionValues: [Int: [[String:Any]]] = [
-    1: [
+  let optionValues: [FilterSection: [[String:Any]]] = [
+    .Distance: [
       [ "title": "0.3 Miles", "value": 0.3 ],
       [ "title": "0.5 Miles", "value": 0.5 ],
       [ "title": "1 Mile", "value": 1],
       [ "title": "2 Miles", "value": 2],
       [ "title": "5 Miles", "value": 5],
     ],
-    2: [
+    .SortBy: [
       [ "title": "Best Match", "value": YelpSortMode.BestMatched],
       [ "title": "Distance", "value": YelpSortMode.Distance ],
       [ "title": "Highest Rated", "value": YelpSortMode.HighestRated ],
     ],
   ]
-  var selectedOptionIndex: [Int:Int] = [ 1: 2, 2: 0 ]
-  var tableSectionCollapsed: [Int:Bool] = [ 1: true, 2: true ]
+  var selectedOptionIndex: [FilterSection:Int] = [
+    .Distance: 2,
+    .SortBy: 0,
+  ]
+  var tableSectionCollapsed: [FilterSection:Bool] = [
+    .Distance: true,
+    .SortBy: true,
+  ]
   var categories: [[String:String]]!
   var switchStates = [Int:Bool]()
   var dealState: Bool = false
@@ -70,13 +79,14 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
   }
 
   func switchCell(switchCell: SwitchCell, didChangeValue value: Bool) {
-    let indexPath = tableView.indexPathForCell(switchCell)!
+    guard let indexPath = tableView.indexPathForCell(switchCell) else { return }
+    guard let filterSection = FilterSection(rawValue: indexPath.section) else { return }
 
-    if (indexPath.section == DEAL) {
+    if (filterSection == .Deal) {
       dealState = value
     }
 
-    if (indexPath.section == CATEGORIES) {
+    if (filterSection == .Categories) {
       switchStates[indexPath.row] = value
     }
   }
@@ -86,76 +96,88 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
   }
 
   func tableView(tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-    if section == DEAL {
+    guard let filterSection = FilterSection(rawValue: section) where filterSection != .Deal else {
       return 0
     }
+
     return 30
   }
 
   func tableView(tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    if (section == DEAL) { return nil }
+    guard let filterSection = FilterSection(rawValue: section) where filterSection != .Deal else {
+      return nil
+    }
 
     let view = tableView.dequeueReusableHeaderFooterViewWithIdentifier("HeaderView") as! HeaderView
-    view.titleLabel.text = sectionTitle[section]
+    view.titleLabel.text = sectionTitle[filterSection]
     return view
   }
 
   func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    let section = indexPath.section
-    if (section == DISTANCE || section == SORT_BY) {
-      let wasCollapsed = (tableSectionCollapsed[section] ?? false)
+    guard let filterSection = FilterSection(rawValue: indexPath.section) else {
+      // should never happen
+      return
+    }
+
+    if (filterSection == .Distance || filterSection == .SortBy) {
+      let wasCollapsed = (tableSectionCollapsed[filterSection] ?? false)
       if (!wasCollapsed) {
-        selectedOptionIndex[section] = indexPath.row
+        selectedOptionIndex[filterSection] = indexPath.row
       }
-      tableSectionCollapsed[section] = !wasCollapsed
+      tableSectionCollapsed[filterSection] = !wasCollapsed
       tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
-    if (section == CATEGORIES && !categoriesAreExpanded && indexPath.row == MAX_CONTRACTED_CATEGORIES) {
+    if (filterSection == .Categories && !categoriesAreExpanded && indexPath.row == MAX_CONTRACTED_CATEGORIES) {
       categoriesAreExpanded = true
       tableView.reloadSections(NSIndexSet(index: indexPath.section), withRowAnimation: UITableViewRowAnimation.Automatic)
     }
   }
 
   func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    switch section {
-    case DEAL:
-      return 1
-    case DISTANCE, SORT_BY:
-      return (tableSectionCollapsed[section] ?? false) ? 1 : optionValues[section]!.count
-    case CATEGORIES:
-      // TODO: assert somewhere that MAX_CONTRACTED_CATEGORIES > categories.count ?
-      return categoriesAreExpanded ? categories.count : MAX_CONTRACTED_CATEGORIES + 1
-    default:
+    guard let filterSection = FilterSection(rawValue: section) else {
       // should never happen
       return 0
+    }
+
+    switch filterSection {
+    case .Deal:
+      return 1
+    case .Distance, .SortBy:
+      return (tableSectionCollapsed[filterSection] ?? false) ? 1 : optionValues[filterSection]!.count
+    case .Categories:
+      // TODO: assert somewhere that MAX_CONTRACTED_CATEGORIES > categories.count ?
+      return categoriesAreExpanded ? categories.count : MAX_CONTRACTED_CATEGORIES + 1
     }
   }
 
   func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-    let section = indexPath.section
+    guard let filterSection = FilterSection(rawValue: indexPath.section) else {
+      // should never happen
+      return UITableViewCell()
+    }
 
-    switch section {
-    case DEAL:
+    switch filterSection {
+    case .Deal:
       let cell = tableView.dequeueReusableCellWithIdentifier("SwitchCell") as! SwitchCell
       cell.delegate = self
       cell.switchLabel.text = "Offering a Deal"
       cell.onSwitch.on = dealState
       return cell
-    case DISTANCE, SORT_BY:
-      let sectionIsCollapsed = tableSectionCollapsed[section] ?? false
-      let indexOfSelectedOption = selectedOptionIndex[section]!
+    case .Distance, .SortBy:
+      let sectionIsCollapsed = tableSectionCollapsed[filterSection] ?? false
+      let indexOfSelectedOption = selectedOptionIndex[filterSection]!
       if (sectionIsCollapsed) {
         let cell = tableView.dequeueReusableCellWithIdentifier("OptionCollapsedCell") as! OptionCollapsedCell
-        let option = optionValues[section]![indexOfSelectedOption]
+        let option = optionValues[filterSection]![indexOfSelectedOption]
         cell.option = option
         return cell
       }
-      let option = optionValues[section]![indexPath.row]
+      let option = optionValues[filterSection]![indexPath.row]
       let cell = tableView.dequeueReusableCellWithIdentifier("OptionCell") as! OptionCell
       cell.option = option
       cell.on = indexOfSelectedOption == indexPath.row
       return cell
-    case CATEGORIES:
+    case .Categories:
       if !categoriesAreExpanded && indexPath.row == MAX_CONTRACTED_CATEGORIES {
         return tableView.dequeueReusableCellWithIdentifier("SeeAllCell")!
       }
@@ -164,9 +186,6 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       cell.switchLabel.text = categories[indexPath.row]["name"]
       cell.onSwitch.on = switchStates[indexPath.row] ?? false
       return cell
-    default:
-      // should never happen
-      return UITableViewCell()
     }
   }
 
@@ -183,12 +202,12 @@ class FiltersViewController: UIViewController, UITableViewDataSource, UITableVie
       }
     }
 
-    if let distanceIndex = selectedOptionIndex[DISTANCE] {
-      distance = optionValues[DISTANCE]![distanceIndex]["value"] as? Float
+    if let distanceIndex = selectedOptionIndex[.Distance] {
+      distance = optionValues[.Distance]![distanceIndex]["value"] as? Float
     }
 
-    if let sortByIndex = selectedOptionIndex[SORT_BY] {
-      sort = optionValues[SORT_BY]![sortByIndex]["value"] as? YelpSortMode
+    if let sortByIndex = selectedOptionIndex[.SortBy] {
+      sort = optionValues[.SortBy]![sortByIndex]["value"] as? YelpSortMode
     }
 
     let filters = Filters(sort: sort, categories: selectedCategories, deals: dealState, distance: distance)

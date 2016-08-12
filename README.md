@@ -2,7 +2,7 @@
 
 **Pley** is a Yelp search app using the [Yelp API](http://www.yelp.com/developers/documentation/v2/search_api).
 
-Time spent: **9.75** hours spent in total
+Time spent: **10.75** hours spent in total
 
 ## User Stories
 
@@ -35,8 +35,8 @@ The following **additional** features are implemented:
 
 Please list two areas of the assignment you'd like to **discuss further with your peers** during the next class (examples include better ways to implement something, how to extend your app in certain ways, etc):
 
-1. Sometimes we have to use the delegate pattern for events, other times we use gesture recognizers. What's the logic to choose one or the other?
-2. Why does it take me to interface when I click olympics and is there a way to jump to implementation? And how to expand right pane to be main pane?
+1. What is the proper way to handle "should never happen" cases? (see code comments)
+2. 
 
 ## Video Walkthrough
 
@@ -48,14 +48,13 @@ GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-- What is the proper way to handle "should never happen" cases?
 - Had to remove `@objc` from `FiltersViewControllerDelegate` to allow `Any` type argument, 
   because `optionValues` isn't allowed to be type `[Int: [[String:Any]]]` .
   Is Swift automatically casing to `NSString` for strings?
 
 ## License
 
-    Copyright [yyyy] [name of copyright owner]
+    Copyright 2016 Gil Birman
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
