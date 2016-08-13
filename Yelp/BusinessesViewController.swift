@@ -9,7 +9,8 @@
 import UIKit
 import CoreLocation
 
-class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, FiltersViewControllerDelegate, UISearchBarDelegate, UIScrollViewDelegate {
+class BusinessesViewController: UIViewController, UITableViewDelegate, UITableViewDataSource,
+FiltersViewControllerDelegate, UISearchBarDelegate, UIScrollViewDelegate, CLLocationManagerDelegate {
 
   var viewGestureRecognizerForSearchBar: UITapGestureRecognizer!
   var businesses: [Business]!
@@ -18,12 +19,21 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
   var searchTerm: String?
   var isLoadingData = false
   var loadingMoreView:InfiniteScrollActivityView?
+  var locationManager: CLLocationManager!
+  var currentLatLng: CLLocationCoordinate2D?
 
   @IBOutlet weak var filtersButtonItem: UIBarButtonItem!
   @IBOutlet weak var tableView: UITableView!
 
   override func viewDidLoad() {
     super.viewDidLoad()
+
+    locationManager = CLLocationManager()
+    locationManager.delegate = self
+    locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+    locationManager.distanceFilter = 200
+    locationManager.requestWhenInUseAuthorization()
+    locationManager.startUpdatingLocation()
 
     tableView.delegate = self
     tableView.dataSource = self
@@ -49,14 +59,34 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     tableView.contentInset = insets
   }
 
-  func performSearch() {
+  func locationManager(manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    let location = locations[0]
+    currentLatLng = location.coordinate
+    locationManager.stopUpdatingLocation()
+    performSearch()
+  }
+
+  func performSearch(callback: (([Business]) -> Void)?) {
     let searchTerm = self.searchTerm ?? ""
 
-    Business.searchWithTerm(searchTerm, sort: filters?.sort, categories: filters?.categories, deals: filters?.deals, offset: 0) {
-      (businesses: [Business]!, error: NSError!) in
-      self.businesses = businesses
-      self.tableView.reloadData()
+    Business.searchWithTerm(searchTerm,
+                            sort: filters?.sort,
+                            categories: filters?.categories,
+                            deals: filters?.deals,
+                            latLng: currentLatLng,
+                            offset: 0) {
+                              (businesses: [Business]!, error: NSError!) in
+                              self.businesses = businesses
+                              self.tableView.reloadData()
+
+                              if let callback = callback, businesses = businesses {
+                                callback(businesses)
+                              }
     }
+  }
+
+  func performSearch() {
+    performSearch(nil)
   }
 
   func performPagedSearch() {
@@ -69,12 +99,17 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
     loadingMoreView!.startAnimating()
 
     isLoadingData = true
-    Business.searchWithTerm(searchTerm, sort: filters?.sort, categories: filters?.categories, deals: filters?.deals, offset: offset) {
-      (businesses: [Business]!, error: NSError!) in
-      self.isLoadingData = false
-      self.loadingMoreView!.stopAnimating()
-      self.businesses.appendContentsOf(businesses)
-      self.tableView.reloadData()
+    Business.searchWithTerm(searchTerm,
+                            sort: filters?.sort,
+                            categories: filters?.categories,
+                            deals: filters?.deals,
+                            latLng: currentLatLng,
+                            offset: offset) {
+                              (businesses: [Business]!, error: NSError!) in
+                              self.isLoadingData = false
+                              self.loadingMoreView!.stopAnimating()
+                              self.businesses.appendContentsOf(businesses)
+                              self.tableView.reloadData()
     }
   }
 
@@ -136,23 +171,25 @@ class BusinessesViewController: UIViewController, UITableViewDelegate, UITableVi
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     // Get the new view controller using segue.destinationViewController.
     // Pass the selected object to the new view controller.
-    if segue.destinationViewController is UINavigationController {
-      if let navigationViewController = segue.destinationViewController as? UINavigationController {
-        let filtersViewController = navigationViewController.topViewController as! FiltersViewController
-        filtersViewController.delegate = self
-      }
-    } else if segue.destinationViewController is MapViewController {
-      if let mapViewController = segue.destinationViewController as? MapViewController {
-        var annotations = [MapAnnotation]()
-        for b in businesses {
-          let annotation = MapAnnotation(title: b.name ?? "", locationName: b.categories ?? "", coordinate: b.coordinate!)
-          annotations.append(annotation)
+    guard let navigationViewController = segue.destinationViewController as? UINavigationController else { return }
+
+    if navigationViewController.topViewController is FiltersViewController {
+      let filtersViewController = navigationViewController.topViewController as! FiltersViewController
+      filtersViewController.delegate = self
+    } else if navigationViewController.topViewController is MapViewController {
+      if let mapViewController = navigationViewController.topViewController as? MapViewController {
+        mapViewController.businesses = businesses
+        
+        mapViewController.onClickRefreshCallback = { (latLng: CLLocationCoordinate2D) in
+          self.currentLatLng = latLng
+          self.performSearch({ (businesses) in
+            mapViewController.businesses = businesses
+          })
         }
-        mapViewController.mapAnnotations = annotations
       }
     }
   }
-
+  
   func filtersViewController(filtersViewController: FiltersViewController, didUpdateFilters filters: Filters) {
     self.filters = filters
     performSearch()

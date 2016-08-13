@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import AFNetworking
 
 class Business: NSObject {
     let name: String?
@@ -18,6 +19,7 @@ class Business: NSObject {
     let ratingImageURL: NSURL?
     let reviewCount: NSNumber?
     let coordinate: CLLocationCoordinate2D?
+    static var lastRequest: AFHTTPRequestOperation?
 
     init(dictionary: NSDictionary) {
         name = dictionary["name"] as? String
@@ -95,8 +97,12 @@ class Business: NSObject {
     class func searchWithTerm(term: String, completion: ([Business]!, NSError!) -> Void) {
         YelpClient.sharedInstance.searchWithTerm(term, completion: completion)
     }
-    
-  class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, offset: Int, completion: ([Business]!, NSError!) -> Void) -> Void {
-    YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, offset: offset, completion: completion)
+
+  class func searchWithTerm(term: String, sort: YelpSortMode?, categories: [String]?, deals: Bool?, latLng: CLLocationCoordinate2D?, offset: Int, completion: ([Business]!, NSError!) -> Void) -> Void {
+
+    // cancel previous request
+    if let lastRequest = lastRequest { lastRequest.cancel() }
+
+    lastRequest = YelpClient.sharedInstance.searchWithTerm(term, sort: sort, categories: categories, deals: deals, latLng: latLng, offset: offset, completion: completion)
     }
 }

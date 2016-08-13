@@ -134,7 +134,7 @@
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" title="Map" id="cb8-GI-KmQ">
                             <connections>
-                                <segue destination="dfc-0X-BxX" kind="push" id="aBk-fS-7ys"/>
+                                <segue destination="z2F-7J-f4O" kind="modal" id="VxE-Qt-26I"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>
@@ -323,7 +323,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="oJb-sa-duH">
+                            <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" showsUserLocation="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oJb-sa-duH">
                                 <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                             </mapView>
                         </subviews>
@@ -335,14 +335,25 @@
                             <constraint firstItem="oJb-sa-duH" firstAttribute="leading" secondItem="hBT-4l-uCp" secondAttribute="leading" id="bjb-ZF-S4A"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="01L-iF-WJT"/>
+                    <navigationItem key="navigationItem" id="01L-iF-WJT">
+                        <barButtonItem key="leftBarButtonItem" title="List" id="C4d-L5-7so">
+                            <connections>
+                                <action selector="onList:" destination="dfc-0X-BxX" id="p85-23-ISh"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="Refresh" id="DAy-Z5-EnR">
+                            <connections>
+                                <action selector="onRefresh:" destination="dfc-0X-BxX" id="BGC-bx-c1n"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="mapView" destination="oJb-sa-duH" id="HZg-iD-J2J"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Be4-7M-S2e" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1485" y="1030"/>
+            <point key="canvasLocation" x="2017" y="1030"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="WAf-X1-5c0">
@@ -406,6 +417,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="u8e-pE-zka" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1927" y="338"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="gO4-4G-wmk">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="z2F-7J-f4O" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="r2j-ig-ruM"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="gqo-iC-UQs">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="dfc-0X-BxX" kind="relationship" relationship="rootViewController" id="w77-4N-JTP"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="k2a-Qi-JVW" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1485" y="1030"/>
         </scene>
     </scenes>
 </document>

@@ -14,6 +14,24 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   @IBOutlet weak var mapView: MKMapView!
 
   var mapAnnotations: [MapAnnotation]?
+  var businesses: [Business]! {
+    didSet {
+      if let mapAnnotations = mapAnnotations {
+        mapView.removeAnnotations(mapAnnotations)
+      }
+      var annotations = [MapAnnotation]()
+      for b in businesses {
+        let annotation = MapAnnotation(title: b.name ?? "", locationName: b.categories ?? "", coordinate: b.coordinate!)
+        annotations.append(annotation)
+      }
+      mapAnnotations = annotations
+      if let mapAnnotations = mapAnnotations, mapView = mapView {
+        mapView.showAnnotations(mapAnnotations, animated: false)
+      }
+    }
+  }
+
+  var onClickRefreshCallback: ((CLLocationCoordinate2D) -> Void)?
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -28,6 +46,15 @@ class MapViewController: UIViewController, MKMapViewDelegate {
   override func didReceiveMemoryWarning() {
     super.didReceiveMemoryWarning()
     // Dispose of any resources that can be recreated.
+  }
+
+  @IBAction func onRefresh(sender: AnyObject) {
+    print("refresh")
+    onClickRefreshCallback?(mapView.centerCoordinate)
+  }
+
+  @IBAction func onList(sender: AnyObject) {
+    dismissViewControllerAnimated(true, completion: nil)
   }
 
   func mapView(mapView: MKMapView, viewForAnnotation annotation: MKAnnotation) -> MKAnnotationView? {
